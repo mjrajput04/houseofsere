@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, Package, ShoppingBag, FolderOpen, TrendingUp, DollarSign, Calendar, Activity, Eye, Clock, CheckCircle, AlertCircle } from 'lucide-react';
 
+const API_URL = import.meta.env.VITE_API_URL || '';
+
 const AdminDashboardOverview = () => {
   const [stats, setStats] = useState({
     users: 0,
@@ -26,10 +28,10 @@ const AdminDashboardOverview = () => {
   const fetchDashboardData = async () => {
     try {
       const [usersRes, productsRes, categoriesRes, ordersRes] = await Promise.all([
-        fetch('/api/users'),
-        fetch('/api/products'),
-        fetch('/api/categories'),
-        fetch('/api/orders')
+        fetch(`${API_URL}/api/users`),
+        fetch(`${API_URL}/api/products`),
+        fetch(`${API_URL}/api/categories`),
+        fetch(`${API_URL}/api/orders`)
       ]);
 
       const [users, products, categories, orders] = await Promise.all([

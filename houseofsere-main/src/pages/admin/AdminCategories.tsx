@@ -5,6 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Plus, Trash2, FolderOpen, Search, Edit, Eye, Calendar, Package } from 'lucide-react';
 import { toast } from 'sonner';
 
+const API_URL = import.meta.env.VITE_API_URL || '';
+
 const AdminCategories = () => {
   const [categories, setCategories] = useState(['']);
   const [savedCategories, setSavedCategories] = useState([]);
@@ -27,8 +29,8 @@ const AdminCategories = () => {
   const fetchData = async () => {
     try {
       const [categoriesRes, productsRes] = await Promise.all([
-        fetch('/api/categories'),
-        fetch('/api/products')
+        fetch(`${API_URL}/api/categories`),
+        fetch(`${API_URL}/api/products`)
       ]);
 
       const [categoriesData, productsData] = await Promise.all([
@@ -94,7 +96,7 @@ const AdminCategories = () => {
     const validCategories = categories.filter(cat => cat.trim() !== '');
     if (validCategories.length > 0) {
       try {
-        const response = await fetch('/api/categories/bulk', {
+        const response = await fetch(`${API_URL}/api/categories/bulk`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -126,7 +128,7 @@ const AdminCategories = () => {
     }
 
     try {
-      const response = await fetch(`/api/categories/${categoryId}`, {
+      const response = await fetch(`${API_URL}/api/categories/${categoryId}`, {
         method: 'DELETE',
       });
       
@@ -153,7 +155,7 @@ const AdminCategories = () => {
     }
 
     try {
-      const response = await fetch(`/api/categories/${categoryId}`, {
+      const response = await fetch(`${API_URL}/api/categories/${categoryId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

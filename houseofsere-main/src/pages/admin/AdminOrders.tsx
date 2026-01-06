@@ -5,6 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Trash2, User, Package, MapPin, CreditCard, Search, Filter, ShoppingBag, DollarSign, Calendar, Clock, CheckCircle, Eye, Edit } from 'lucide-react';
 import { toast } from 'sonner';
 
+const API_URL = import.meta.env.VITE_API_URL || '';
+
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
@@ -31,8 +33,8 @@ const AdminOrders = () => {
   const fetchData = async () => {
     try {
       const [ordersRes, usersRes] = await Promise.all([
-        fetch('/api/orders'),
-        fetch('/api/users')
+        fetch(`${API_URL}/api/orders`),
+        fetch(`${API_URL}/api/users`)
       ]);
 
       const [ordersData, usersData] = await Promise.all([
@@ -104,7 +106,7 @@ const AdminOrders = () => {
     if (!confirm('Are you sure you want to delete this order?')) return;
     
     try {
-      const response = await fetch(`/api/orders/${orderId}`, {
+      const response = await fetch(`${API_URL}/api/orders/${orderId}`, {
         method: 'DELETE'
       });
       
@@ -123,7 +125,7 @@ const AdminOrders = () => {
 
   const updateOrderStatus = async (orderId: string, newStatus: string) => {
     try {
-      const response = await fetch(`/api/orders/${orderId}/status`, {
+      const response = await fetch(`${API_URL}/api/orders/${orderId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

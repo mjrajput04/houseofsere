@@ -7,6 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Plus, Trash2, X, Edit } from 'lucide-react';
 import { toast } from 'sonner';
 
+const API_URL = import.meta.env.VITE_API_URL || '';
+
 const AdminProducts = () => {
   const [savedProducts, setSavedProducts] = useState([]);
   const [savedCategories, setSavedCategories] = useState([]);
@@ -28,7 +30,7 @@ const AdminProducts = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('/api/products');
+      const response = await fetch(`${API_URL}/api/products`);
       if (response.ok) {
         const data = await response.json();
         setSavedProducts(data);
@@ -40,7 +42,7 @@ const AdminProducts = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('/api/categories');
+      const response = await fetch(`${API_URL}/api/categories`);
       if (response.ok) {
         const data = await response.json();
         setSavedCategories(data);
@@ -102,8 +104,8 @@ const AdminProducts = () => {
       }
 
       const url = editingProduct 
-        ? `/api/products/${editingProduct._id}`
-        : '/api/products';
+        ? `${API_URL}/api/products/${editingProduct._id}`
+        : `${API_URL}/api/products`;
       
       const method = editingProduct ? 'PUT' : 'POST';
 
@@ -135,7 +137,7 @@ const AdminProducts = () => {
 
   const handleDeleteProduct = async (productId: string) => {
     try {
-      const response = await fetch(`/api/products/${productId}`, {
+      const response = await fetch(`${API_URL}/api/products/${productId}`, {
         method: 'DELETE',
       });
       

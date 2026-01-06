@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Settings, Truck, Video, Save, Upload, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
+const API_URL = import.meta.env.VITE_API_URL || '';
+
 const AdminSettings = () => {
   const [settings, setSettings] = useState({
     shippingCost: '',
@@ -20,7 +22,7 @@ const AdminSettings = () => {
 
   const fetchSettings = async () => {
     try {
-      const response = await fetch('/api/settings');
+      const response = await fetch(`${API_URL}/api/settings`);
       if (response.ok) {
         const data = await response.json();
         setSettings({
@@ -44,7 +46,7 @@ const AdminSettings = () => {
         formData.append('heroVideo', videoFile);
       }
 
-      const response = await fetch('/api/settings', {
+      const response = await fetch(`${API_URL}/api/settings`, {
         method: 'POST',
         body: formData
       });
@@ -83,7 +85,7 @@ const AdminSettings = () => {
     if (!confirm('Are you sure you want to delete the current video?')) return;
     
     try {
-      const response = await fetch('/api/settings/delete-video', {
+      const response = await fetch(`${API_URL}/api/settings/delete-video`, {
         method: 'DELETE'
       });
       

@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Users, Search, Filter, UserPlus, Mail, Phone, Calendar, Shield, Eye, Edit, Trash2, MoreVertical } from 'lucide-react';
 import { toast } from 'sonner';
 
+const API_URL = import.meta.env.VITE_API_URL || '';
+
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -35,7 +37,7 @@ const AdminUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('/api/users');
+      const response = await fetch(`${API_URL}/api/users`);
       if (response.ok) {
         const data = await response.json();
         setUsers(data);
@@ -92,7 +94,7 @@ const AdminUsers = () => {
     if (!confirm('Are you sure you want to delete this user?')) return;
 
     try {
-      const response = await fetch(`/api/users/${userId}`, {
+      const response = await fetch(`${API_URL}/api/users/${userId}`, {
         method: 'DELETE'
       });
 
@@ -121,7 +123,7 @@ const AdminUsers = () => {
 
   const handleSaveEdit = async (userId) => {
     try {
-      const response = await fetch(`/api/users/${userId}`, {
+      const response = await fetch(`${API_URL}/api/users/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
