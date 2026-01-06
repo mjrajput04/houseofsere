@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import serelogo from "@/assets/serelogo.png";
 
 const navLinks = [{
   name: "HOME",
@@ -52,7 +53,7 @@ const Header = () => {
           <div className="flex-1">
             <a href="#home" className="inline-block">
               <img 
-                src="/src/assets/serelogo.png" 
+                src={serelogo} 
                 alt="House of SÈRE" 
                 className="h-12 w-auto drop-shadow-md"
               />
@@ -111,7 +112,7 @@ const Header = () => {
         <div className="lg:hidden flex items-center justify-between h-16">
           <a href="#home" className="inline-block">
             <img 
-              src="/src/assets/serelogo.png" 
+              src={serelogo} 
               alt="House of SÈRE" 
               className="h-10 w-auto drop-shadow-md"
             />
