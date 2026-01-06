@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - MONGODB_URI=mongodb+srv://Vercel-Admin-houseofsere:M3gPTaTAaoTSaDMs@houseofsere.qw3whho.mongodb.net/?retryWrites=true&w=majority
+      - JWT_SECRET=houseofsere-super-secret-key-2024
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=houseofsere2024
+      - DB_NAME=houseofsere
+    volumes:
+      - ./uploads:/app/uploads
