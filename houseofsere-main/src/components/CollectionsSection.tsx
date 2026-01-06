@@ -4,6 +4,7 @@ import { MessageCircle, Instagram, ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/contexts/UserContext";
 
+const API_URL = import.meta.env.VITE_API_URL || '';
 const WHATSAPP_URL = "https://api.whatsapp.com/send/?phone=7096748749";
 const INSTAGRAM_URL = "https://www.instagram.com/house_ofsere/";
 
@@ -30,7 +31,7 @@ const CollectionsSection = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/api/products');
+        const response = await fetch(`${API_URL}/api/products`);
         if (response.ok) {
           const data = await response.json();
           setProducts(data);

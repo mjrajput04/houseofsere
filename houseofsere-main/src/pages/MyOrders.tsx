@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, Package, MapPin, Calendar, CreditCard, Truck } from 'lucide-react';
 import { useUser } from '@/contexts/UserContext';
 
+const API_URL = import.meta.env.VITE_API_URL || '';
+
 const MyOrders = () => {
   const navigate = useNavigate();
   const { user } = useUser();
@@ -20,7 +22,7 @@ const MyOrders = () => {
 
   const fetchMyOrders = async () => {
     try {
-      const response = await fetch(`/api/orders/user/${user.id}`);
+      const response = await fetch(`${API_URL}/api/orders/user/${user.id}`);
       if (response.ok) {
         const data = await response.json();
         setOrders(data);

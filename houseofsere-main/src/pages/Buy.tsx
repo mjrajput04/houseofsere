@@ -9,6 +9,8 @@ import { toast } from 'sonner';
 import { ArrowLeft, MapPin, CreditCard, Truck, Package, CheckCircle, Clock } from 'lucide-react';
 import { useUser } from '@/contexts/UserContext';
 
+const API_URL = import.meta.env.VITE_API_URL || '';
+
 const Buy = () => {
   const navigate = useNavigate();
   const { productId } = useParams();
@@ -46,7 +48,7 @@ const Buy = () => {
 
   const fetchProduct = async () => {
     try {
-      const response = await fetch('/api/products');
+      const response = await fetch(`${API_URL}/api/products`);
       if (response.ok) {
         const products = await response.json();
         const foundProduct = products.find((p: any) => p._id === productId);
@@ -67,7 +69,7 @@ const Buy = () => {
 
   const fetchShippingCost = async () => {
     try {
-      const response = await fetch('/api/settings');
+      const response = await fetch(`${API_URL}/api/settings`);
       if (response.ok) {
         const settings = await response.json();
         setShippingCost(parseFloat(settings.shippingCost) || 0);
@@ -104,7 +106,7 @@ const Buy = () => {
     setIsLoading(true);
     
     try {
-      const response = await fetch('/api/orders', {
+      const response = await fetch(`${API_URL}/api/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
