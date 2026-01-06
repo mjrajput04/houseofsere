@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 
 const app = express();
 const JWT_SECRET = process.env.JWT_SECRET || 'houseofsere-admin-secret';
@@ -171,6 +171,45 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
+// Delete user
+app.delete('/api/users/:id', async (req, res) => {
+  try {
+    await connectDB();
+    const users = db.collection('users');
+    const result = await users.deleteOne({ _id: new ObjectId(req.params.id) });
+    
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Update user
+app.put('/api/users/:id', async (req, res) => {
+  try {
+    await connectDB();
+    const { firstName, lastName, email, phone } = req.body;
+    const users = db.collection('users');
+    
+    const result = await users.updateOne(
+      { _id: new ObjectId(req.params.id) },
+      { $set: { firstName, lastName, email, phone, updatedAt: new Date() } }
+    );
+    
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    res.json({ message: 'User updated successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 app.post('/api/orders', async (req, res) => {
   try {
     await connectDB();
@@ -212,6 +251,57 @@ app.get('/api/orders', async (req, res) => {
   }
 });
 
+// Get orders by user
+app.get('/api/orders/user/:userId', async (req, res) => {
+  try {
+    await connectDB();
+    const orders = db.collection('orders');
+    const result = await orders.find({ userId: req.params.userId }).toArray();
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Delete order
+app.delete('/api/orders/:id', async (req, res) => {
+  try {
+    await connectDB();
+    const orders = db.collection('orders');
+    const result = await orders.deleteOne({ _id: new ObjectId(req.params.id) });
+    
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+    
+    res.json({ message: 'Order deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Update order status
+app.put('/api/orders/:id/status', async (req, res) => {
+  try {
+    await connectDB();
+    const { status } = req.body;
+    const orders = db.collection('orders');
+    
+    const result = await orders.updateOne(
+      { _id: new ObjectId(req.params.id) },
+      { $set: { status, updatedAt: new Date() } }
+    );
+    
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+    
+    res.json({ message: 'Order status updated successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 app.get('/api/products', async (req, res) => {
   try {
     await connectDB();
@@ -247,6 +337,45 @@ app.post('/api/products', async (req, res) => {
       message: 'Product created successfully',
       productId: result.insertedId 
     });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Update product
+app.put('/api/products/:id', async (req, res) => {
+  try {
+    await connectDB();
+    const { title, category, price, imageUrl, description } = req.body;
+    const products = db.collection('products');
+    
+    const result = await products.updateOne(
+      { _id: new ObjectId(req.params.id) },
+      { $set: { title, category, price, imageUrl, description, updatedAt: new Date() } }
+    );
+    
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    
+    res.json({ message: 'Product updated successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Delete product
+app.delete('/api/products/:id', async (req, res) => {
+  try {
+    await connectDB();
+    const products = db.collection('products');
+    const result = await products.deleteOne({ _id: new ObjectId(req.params.id) });
+    
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    
+    res.json({ message: 'Product deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -296,6 +425,75 @@ app.post('/api/categories/bulk', async (req, res) => {
       message: `${categoriesToInsert.length} categories saved successfully`,
       savedCount: categoriesToInsert.length
     });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Update category
+app.put('/api/categories/:id', async (req, res) => {
+  try {
+    await connectDB();
+    const { name } = req.body;
+    const categories = db.collection('categories');
+    
+    const result = await categories.updateOne(
+      { _id: new ObjectId(req.params.id) },
+      { $set: { name, updatedAt: new Date() } }
+    );
+    
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ message: 'Category not found' });
+    }
+    
+    res.json({ message: 'Category updated successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Delete category
+app.delete('/api/categories/:id', async (req, res) => {
+  try {
+    await connectDB();
+    const categories = db.collection('categories');
+    const result = await categories.deleteOne({ _id: new ObjectId(req.params.id) });
+    
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Category not found' });
+    }
+    
+    res.json({ message: 'Category deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Settings endpoints
+app.get('/api/settings', async (req, res) => {
+  try {
+    await connectDB();
+    const settings = db.collection('settings');
+    const result = await settings.findOne({}) || {};
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+app.post('/api/settings', async (req, res) => {
+  try {
+    await connectDB();
+    const { shippingCost } = req.body;
+    const settings = db.collection('settings');
+    
+    await settings.replaceOne(
+      {},
+      { shippingCost, updatedAt: new Date() },
+      { upsert: true }
+    );
+    
+    res.json({ message: 'Settings saved successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
