@@ -49,7 +49,15 @@ const Header = () => {
       <nav className="container mx-auto px-4 lg:px-8">
         {/* Desktop Navigation - Centered */}
         <div className="hidden lg:flex items-center justify-between h-20">
-          <div className="flex-1" />
+          <div className="flex-1">
+            <a href="#home" className="inline-block">
+              <img 
+                src="/src/assets/serelogo.png" 
+                alt="House of SÈRE" 
+                className="h-12 w-auto drop-shadow-md"
+              />
+            </a>
+          </div>
           <div className="flex items-center gap-12">
             {navLinks.map(link => (
               <a 
@@ -101,8 +109,12 @@ const Header = () => {
 
         {/* Mobile Header */}
         <div className="lg:hidden flex items-center justify-between h-16">
-          <a href="#home" className="text-white font-serif text-lg drop-shadow-md">
-            House of SÉRE
+          <a href="#home" className="inline-block">
+            <img 
+              src="/src/assets/serelogo.png" 
+              alt="House of SÈRE" 
+              className="h-10 w-auto drop-shadow-md"
+            />
           </a>
           <button onClick={() => setIsOpen(!isOpen)} className="text-white p-2 drop-shadow-md">
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
